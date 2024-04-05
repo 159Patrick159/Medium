@@ -53,3 +53,6 @@ def plot_gpr_samples(gpr_model, n_samples, ax):
         color="black",
         label=r"$\pm$ 1 std. dev.",
     )
+    ax.legend()
+    ax.set_xlabel('X')
+    ax.set_ylabel('y')
