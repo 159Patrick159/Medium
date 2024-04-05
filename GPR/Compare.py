@@ -2,24 +2,22 @@
 # Author: Patrick Sandoval                   #
 # Date: 2023-12-02                           #
 # ############################################
-# The following script 'fits' randomly       #
-# generated data using a Gaussian process    #
-# and a Markov-Chain Monte-Carlo MLE method  #
+# The following script 'fits' data generated #
+# by some unkwon function using a Gaussian   #
+# Process Regressor through distinct kernels #
 ##############################################
 
 ######################### Gaussian Process #########################
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_friedman1
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, RationalQuadratic as RQ
-from scipy.optimize import minimize
 from Helpers import plot_gpr_samples
 
 ##################### NOTES AND COMMENTS #####################
 # Kernel is the covariance function - defines correlation between data points
-# RBF stands for Radial Basis Function or Squared Exponential
+# RBF stands for Radial Basis Function also known as Squared Exponential
 
 # Generate synthetic data
 def HiddenFunc(X):
