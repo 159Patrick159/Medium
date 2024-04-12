@@ -10,8 +10,10 @@
 
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 
+sns.set_theme(style='darkgrid')
 
 def plot_gpr_samples(gpr_model, n_samples, ax):
     """Plot samples drawn from the Gaussian process model.
@@ -37,21 +39,21 @@ def plot_gpr_samples(gpr_model, n_samples, ax):
     y_samples = gpr_model.sample_y(X, n_samples)
 
     for idx, single_prior in enumerate(y_samples.T):
-        ax.plot(
-            x,
-            single_prior,
+        sns.lineplot(
+            x=x,
+            y=single_prior,
             linestyle="--",
             alpha=0.7,
-            label=f"Sampled function #{idx + 1}",
+            label=f"Sampled function #{idx + 1}",ax=ax,
         )
-    ax.plot(x, y_mean, color="black", label="Mean")
+    sns.lineplot(x=x, y=y_mean, color="black", label="Mean",ax=ax)
     ax.fill_between(
         x,
         y_mean - y_std,
         y_mean + y_std,
         alpha=0.1,
         color="black",
-        label=r"$\pm$ 1 std. dev.",
+        label=r"$\pm$ 1 std. dev."
     )
     ax.legend()
     ax.set_xlabel('X')
