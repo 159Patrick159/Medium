@@ -75,7 +75,7 @@ ax[1].set_ylabel(r"X$_{j}$",fontsize=14)
 ax[0].imshow(covRBF)
 ax[1].imshow(covRQ)
 plt.tight_layout()
-plt.savefig("GPR/Figures/CovMatrix.png")
+#plt.savefig("GPR/Figures/CovMatrix.png")
 
 # Plot the results
 fig, ax = plt.subplots(figsize=(8,10),nrows=2)
