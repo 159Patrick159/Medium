@@ -28,7 +28,7 @@ X = np.sort(rng.uniform(0,5,5))[:,np.newaxis]
 y = HiddenFunc(X) + rng.normal(0,0.1,X.shape[0])
 
 # Define squared exponential kernel with set lenght scale and bounds given data
-RBFkernel = 1.0* RBF(length_scale=0.1,length_scale_bounds=(1e-5,1))
+RBFkernel = 1.0*RBF(length_scale=0.1,length_scale_bounds=(1e-5,1))
 RQkernel = 1.0*RQ(length_scale=0.1,length_scale_bounds=(1e-5,1))
 
 # Create a Gaussian Process Regressor for specific kernel
@@ -65,21 +65,28 @@ y_predRQ, covRQ = gp_RQ.predict(X_new,return_cov=True)
 
 # Plot covariance matrix
 fig, ax = plt.subplots(figsize=(10,6),ncols=2)
-fig.suptitle("Covariance Matrix of Joint Predictive Distribution",fontsize=16)
 ax[0].set_title("Squared Exponential Kernel",fontsize=14)
 ax[1].set_title("Rational Quadratic Kernel",fontsize=14)
 ax[0].set_xlabel(r"X$_{i}$",fontsize=14)
 ax[0].set_ylabel(r"X$_{j}$",fontsize=14)
 ax[1].set_xlabel(r"X$_{i}$",fontsize=14)
 ax[1].set_ylabel(r"X$_{j}$",fontsize=14)
-ax[0].imshow(covRBF)
-ax[1].imshow(covRQ)
+im0 = ax[0].imshow(covRBF)
+im1 = ax[1].imshow(covRQ)
+cbar0 = plt.colorbar(
+    im0, ax=ax[0], fraction=0.045, pad=0.05)
+cbar1 = plt.colorbar(
+    im1, ax=ax[1], fraction=0.045, pad=0.05)
+cbar0.ax.set_ylabel('$k(x,x)$', fontsize=10)
+cbar1.ax.set_ylabel('$k(x,x)$', fontsize=10)
+ax[0].grid(False)
+ax[1].grid(False)
 plt.tight_layout()
-#plt.savefig("GPR/Figures/CovMatrix.png")
+plt.savefig("GPR/Figures/CovMatrix.png")
 
 # Plot the results
 fig, ax = plt.subplots(figsize=(8,10),nrows=2)
-fig.suptitle("Samples from Posterior Distribution")
+#fig.suptitle("Samples from Posterior Distribution")
 plot_gpr_samples(gpr_model=gp_RBF, n_samples=4, ax=ax[0])
 plot_gpr_samples(gpr_model=gp_RQ, n_samples=4, ax=ax[1])
 ax[0].scatter(X, y, c='r', zorder=10, label='Observations')
