@@ -1,3 +1,14 @@
+################### HEADER ###################
+# Author: Patrick Sandoval                   #
+# Date: 2024-04-15                           #
+# ############################################
+# The following script defines different     #
+# kernels widely used in literautre for      #
+# Gaussian processes and plots their prior   #
+# covaraiance matrices.                      #
+##############################################
+
+############ Relevant Imports ############
 import numpy as np
 import scipy
 import matplotlib
@@ -21,6 +32,10 @@ def SquaredExponential(x1,x2,a=1,l=1):
     return a**2*np.exp(val)
 
 def RationalQuadratic(x1,x2,alpha=1,l=1):
+    '''
+    Defintion of Rational Quadratic kernel with hyperparameters
+    alpha(vertical scale) and l (horizontal scale)
+    '''
     return (1 + scipy.spatial.distance.cdist(x1,x2,'sqeuclidean')/(2*alpha*l**2))**(-alpha)
 
 def ExpSine(x1,x2,a=1,l=1,p=1):
