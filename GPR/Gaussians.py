@@ -10,6 +10,7 @@
 ########## Relevant Imports ##########
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 
@@ -57,17 +58,23 @@ pos[:,:,1] = Y
 
 # Compute MVN for X and Y given mu and Sigma
 Z = multivariate_gaussian(pos,mu=mu,Sigma=sigma)
+# Compute marginal distributions for X and Y
+zxy = Z[Z.shape[0]//2,:]
+zyx = Z[:,Z.shape[0]//2]
 
 fig = plt.figure()
 ax1 = fig.add_subplot(projection='3d')
 ax1.plot_surface(X, Y, Z, rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis)
 cset = ax1.contourf(X, Y, Z, zdir='z', offset=-0.2, cmap=cm.viridis)
+cbar = plt.colorbar(
+    cset, ax=ax1, fraction=0.025, pad=0.05)
+pxy = ax1.plot(x,4*np.ones(len(x)),zxy,label=r"P(X$|$Y=0)")
+pyx = ax1.plot(-4*np.ones(len(x)),y,zxy,label=r"P(Y$|$X=0)")
 ax1.set_xlabel("X",fontsize=14)
 ax1.set_ylabel("Y",fontsize=14)
-ax1.set_zlabel(r"$P(X,Y)$",fontsize=12,)
+cbar.ax.set_ylabel('$P(X,Y)$', fontsize=10)
 ax1.set_zlim(-0.2,0.2)
+ax1.legend()
+ax1.view_init(elev=20,azim=-56,roll=0)
 plt.tight_layout()
 plt.savefig("GPR/Figures/BVN.png")
-plt.show()
-
-
