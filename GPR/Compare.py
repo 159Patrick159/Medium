@@ -27,6 +27,43 @@ rng = np.random.default_rng(seed=42)
 X = np.sort(rng.uniform(0,5,5))[:,np.newaxis]
 y = HiddenFunc(X) + rng.normal(0,0.1,X.shape[0])
 
+
+# Plot raw data
+fig, ax = plt.subplots(figsize=(8,6))
+ax.scatter(X,y,c='k')
+ax.set_xlabel("X",fontsize=14)
+ax.set_ylabel("Observations",fontsize=14)
+plt.savefig("GPR/Figures/Raw.png")
+
+
+fig, ax = plt.subplots(figsize=(8,6))
+ax.plot(X,y,'-o',c='k',label='Prediction')
+ax.set_xlabel("X",fontsize=14)
+ax.set_ylabel("Observations",fontsize=14)
+ax.legend()
+plt.savefig("GPR/Figures/Raw_LinPred.png")
+
+# Generate points at x=1.3, x=1.8, x=2.8
+ysample1 = np.random.normal(loc=7.5,scale=4,size=20)
+ysample2 = np.random.normal(loc=11,scale=4,size=20)
+ysample3 = np.random.normal(loc=10,scale=4,size=20)
+xsample = np.ones(len(ysample1))
+
+fig, ax = plt.subplots(figsize=(8,6))
+ax.set_xlabel("X",fontsize=14)
+ax.set_ylabel("Observations",fontsize=14)
+for i in range(len(ysample1)):
+    x = np.append(X,[1.3*xsample[i],1.8*xsample[i],2.8*xsample[i]])
+    s = np.argsort(x)
+    x = np.sort(x)
+    ytmp = np.append(y,[ysample1[i],ysample2[i],ysample3[i]])
+    ytmp = ytmp[s]
+    ax.plot(x,ytmp,'-o',c='blue',alpha=0.3)
+ax.scatter(X,y,c='k',zorder=2,label='Observations')
+ax.legend()
+plt.savefig("GPR/Figures/Raw_Samples.png")
+
+
 # Define squared exponential kernel with set lenght scale and bounds given data
 RBFkernel = 1.0*RBF(length_scale=0.1,length_scale_bounds=(1e-5,1))
 RQkernel = 1.0*RQ(length_scale=0.1,length_scale_bounds=(1e-5,1))
@@ -62,6 +99,28 @@ print(f"Coefficient of Determinatino (R^2): {gp_RQ.score(X,y)}\n"
 X_new = np.linspace(0, 5, 100)[:, np.newaxis]
 y_predRBF, covRBF = gp_RBF.predict(X_new, return_cov=True)
 y_predRQ, covRQ = gp_RQ.predict(X_new,return_cov=True)
+
+# Plot GP of RBF with n=30 samples
+fig, ax = plt.subplots(figsize=(8,6))
+n_samples=30
+x_fine = np.linspace(0, 5, 100)
+X_fine = x_fine.reshape(-1, 1)
+y_mean, y_std = gp_RBF.predict(X_fine, return_std=True)
+y_samples = gp_RBF.sample_y(X_fine, n_samples)
+
+for idx, single_prior in enumerate(y_samples.T):
+    ax.plot(
+        x_fine,
+        single_prior,
+        c='blue',
+        alpha=0.3
+    )
+ax.scatter(X, y, c='k', zorder=10, label='Observations')
+ax.legend()
+ax.set_xlabel("X",fontsize=14)
+ax.set_ylabel("Obsevations",fontsize=14)
+plt.savefig("GPR/Figures/GP_Samples.png")
+plt.show()
 
 # Plot covariance matrix
 fig, ax = plt.subplots(figsize=(10,6),ncols=2)
