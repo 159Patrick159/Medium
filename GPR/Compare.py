@@ -86,12 +86,12 @@ gp_RQ.fit(X,y)
 
 # Print model evaluation and descriptors
 print("Radial Basis Funcion Kernel Description:")
-print(f"Coefficient of Determinatino (R^2): {gp_RBF.score(X,y)}\n"
+print(f"Coefficient of Determination (R^2): {gp_RBF.score(X,y)}\n"
       f"Kernel parameters after fit: \n{gp_RBF.kernel_} \n"
       f"Log-likelihood: {gp_RBF.log_marginal_likelihood(gp_RBF.kernel_.theta):.3f}\n")
 
 print("Rational Quadratic Kernel Description:")
-print(f"Coefficient of Determinatino (R^2): {gp_RQ.score(X,y)}\n"
+print(f"Coefficient of Determination (R^2): {gp_RQ.score(X,y)}\n"
       f"Kernel parameters after fit: \n{gp_RQ.kernel_} \n"
       f"Log-likelihood: {gp_RQ.log_marginal_likelihood(gp_RQ.kernel_.theta):.3f}\n")
 
@@ -120,10 +120,9 @@ ax.legend()
 ax.set_xlabel("X",fontsize=14)
 ax.set_ylabel("Obsevations",fontsize=14)
 plt.savefig("GPR/Figures/GP_Samples.png")
-plt.show()
 
 # Plot covariance matrix
-fig, ax = plt.subplots(figsize=(10,6),ncols=2)
+fig, ax = plt.subplots(figsize=(12,6),ncols=2)
 ax[0].set_title("Squared Exponential Kernel",fontsize=14)
 ax[1].set_title("Rational Quadratic Kernel",fontsize=14)
 ax[0].set_xlabel(r"X$_{i}$",fontsize=14)
@@ -144,7 +143,7 @@ plt.tight_layout()
 plt.savefig("GPR/Figures/CovMatrix.png")
 
 # Plot the results
-fig, ax = plt.subplots(figsize=(8,10),nrows=2)
+fig, ax = plt.subplots(figsize=(8,10),nrows=2,sharex=True)
 #fig.suptitle("Samples from Posterior Distribution")
 plot_gpr_samples(gpr_model=gp_RBF, n_samples=4, ax=ax[0])
 plot_gpr_samples(gpr_model=gp_RQ, n_samples=4, ax=ax[1])
@@ -153,4 +152,4 @@ ax[1].scatter(X, y, c='r', zorder=10, label='Observations')
 ax[0].set_title("Squared-Exponential Kernel")
 ax[1].set_title("Rational Qudratic Kernel")
 plt.savefig("GPR/Figures/GP.png")
-plt.show()
+#plt.show()
