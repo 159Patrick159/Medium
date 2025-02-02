@@ -62,7 +62,7 @@ def MovingAverage(boxsize):
     boxcar
     ######################################################
     Inputs: 
-    t: boxsize
+    boxsize: number of elements included in boxcar
     ######################################################
     Outputs:
     w: Boxcar array where each value is 1/N where N is
@@ -114,8 +114,8 @@ def bessel_function(f, n=0, omega=1):
     ######################################################
     Inputs: 
     f: frequency array
-    n=
-
+    n: order of bessel function set to 0
+    w: scale of frequency array
     '''
     return jv(n, omega * f)
 
